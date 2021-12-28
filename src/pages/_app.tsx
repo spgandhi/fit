@@ -1,5 +1,5 @@
 import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client'
-import React, { useEffect } from 'react'
+import React from 'react'
 
 import 'antd/dist/antd.css';
 import '../../styles/globals.css'
@@ -11,7 +11,7 @@ const client = new ApolloClient({
   cache: new InMemoryCache(),
 })
 
-function MyApp({ Component, pageProps }) {
+function MyApp({ Component, pageProps }: any) {
   return (
     <div>
       <ApolloProvider client={client}>

@@ -16,7 +16,6 @@ const GET_USERS = gql`
 interface Props {}
 
 function UserList(props: Props) {
-  const {} = props
 
   const { data } = useQuery(GET_USERS);
   console.log(data);
