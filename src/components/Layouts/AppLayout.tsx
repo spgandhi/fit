@@ -7,6 +7,7 @@ interface Props {
   children: React.ReactNode,
   title?: string,
   showNavigation?: boolean,
+  subTitle?: string,
 }
 
 function AppLayout(props: Props) {
@@ -14,16 +15,20 @@ function AppLayout(props: Props) {
     children,
     title,
     showNavigation = true,
+    subTitle
   } = props
   const router = useRouter()
-
-  console.log(props.title);
 
   const routesWithoutBack = ['/', '/workouts'];
 
   return (
     <div className='bg-primary min-h-screen h-full w-full'>
-      <PageHeader className='bg-white' title={title || "Fit"} onBack={routesWithoutBack.indexOf(router.pathname) > -1 ? null : () => router.back()} />
+      <PageHeader 
+        className='bg-white' 
+        title={title || "Fit"} 
+        onBack={routesWithoutBack.indexOf(router.pathname) > -1 ? null : () => router.back()} 
+        subTitle={subTitle || null} 
+      />
       <div className='p-4 pb-16'>
         {children}
       </div>
@@ -32,9 +37,9 @@ function AppLayout(props: Props) {
           <div className="flex-1 text-center text-black">
             <Link  href="/">Home</Link>
           </div>
-          <div className="flex-1 text-center text-black">
+          {/* <div className="flex-1 text-center text-black">
             <Link  href="/workouts">Workouts</Link>
-          </div>
+          </div> */}
         </div>
       )}
     </div>

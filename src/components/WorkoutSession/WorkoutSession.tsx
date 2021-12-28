@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { gql, useMutation, useQuery } from '@apollo/client';
 import { Tabs } from 'antd';
-import { ExerciseRound, Workout } from '../../data/types';
+import { useRouter } from 'next/router';
+import { ExerciseRound, User, Workout } from '../../data/types';
 import AppLayout from '../Layouts/AppLayout';
 import WorkoutSessionExercise from './WorkoutSessionExercise';
 import { transformWorkoutGraphqlData } from './helper';
@@ -11,7 +12,7 @@ import date from '../../data/date';
 const { TabPane } = Tabs;
 
 const GET_DATA = gql`
-query Workouts($where: WorkoutWhere, $workoutConnectionWhere: ExerciseWorkoutConnectionWhere) {
+query Workouts($where: WorkoutWhere, $workoutConnectionWhere: ExerciseWorkoutConnectionWhere, $userWhere: UserWhere) {
   workouts(where: $where) {
     id
     isActive
@@ -26,6 +27,10 @@ query Workouts($where: WorkoutWhere, $workoutConnectionWhere: ExerciseWorkoutCon
         }
       }
     }
+  }
+  users (where: $userWhere) {
+    id
+    name
   }
 }
 `;
@@ -52,17 +57,45 @@ mutation Mutation($where: WorkoutWhere, $update: WorkoutUpdateInput, $workoutCon
 }
 `;
 
+const END_WORKOUT = gql`
+mutation UpdateWorkouts($where: WorkoutWhere, $update: WorkoutUpdateInput, $workoutConnectionWhere: ExerciseWorkoutConnectionWhere) {
+  updateWorkouts(update: $update, where: $where) {
+    workouts {
+      id
+      isActive
+      startTime
+      exercises {
+        name
+        id
+        slug
+        workoutConnection(where: $workoutConnectionWhere) {
+          edges {
+            details
+          }
+        }
+      }
+    } 
+  }
+}
+`
+
 interface Props {
   workoutId: string,
+  userPath: string,
+  userData: User,
 }
 
 function WorkoutSession(props: Props) {
-  const { workoutId } = props;
+  const { workoutId, userPath, userData} = props;
+  const router = useRouter();
 
   const { data } = useQuery(GET_DATA, {
     variables: {
       where: {
         id: workoutId,
+      },
+      userWhere: {
+        id: userData.id,
       },
       workoutConnectionWhere: {
         node: {
@@ -72,15 +105,19 @@ function WorkoutSession(props: Props) {
     },
   });
 
-  const [updateWorkoutMutation, { data: updatedData }] = useMutation(UPDATE_WORKOUT);
+  console.log(data);
 
-  const [showSummary, setShowSummary] = useState<boolean>(false);
+  const [updateWorkoutMutation, { data: updatedData }] = useMutation(UPDATE_WORKOUT);
+  const [endMutation , { data: endWorkoutData }] = useMutation(END_WORKOUT);
+
+  const [showSummary, setShowSummary] = useState<boolean>();
   const [workoutData, setWorkoutData] = useState<Workout>();
 
   useEffect(() => {
     if (data && data.workouts.length > 0) {
       const workoutData = transformWorkoutGraphqlData(data.workouts[0]);
       setWorkoutData(workoutData);
+      setShowSummary(!workoutData.isActive);
     }
   }, [data]);
 
@@ -95,7 +132,7 @@ function WorkoutSession(props: Props) {
     updateWorkoutMutation({
       variables: {
         where: {
-          id: props.workoutId,
+          id: workoutId,
         },
         update: {
           exercises: [
@@ -115,7 +152,7 @@ function WorkoutSession(props: Props) {
         },
         workoutConnectionWhere: {
           node: {
-            id: props.workoutId,
+            id: workoutId,
           },
         },
       },
@@ -146,10 +183,23 @@ function WorkoutSession(props: Props) {
     handleUpdateWorkout(exercises[index].id, exercises[index].rounds);
   };
 
-  console.log(workoutData);
+  const handleEndWorkout = () => {
+    endMutation({
+      variables: {
+        where: {
+          id: workoutId,
+        },
+        update: {
+          isActive: false,
+        },
+      },
+    });
+    router.push(`${userPath}/workouts`); 
+  }
+
 
   return (
-    <AppLayout showNavigation={false} title={workoutData && date.format(workoutData.startTime)}>
+    <AppLayout showNavigation={false} title={workoutData && date.format(workoutData.startTime)} subTitle={data && data.users && data.users[0].name}>
       {workoutData
       && !showSummary &&(
         <>
@@ -175,7 +225,7 @@ function WorkoutSession(props: Props) {
         <WorkoutSummary exercises={workoutData.exercises} />
         <div>
           <button className="button white" type="button" onClick={() => setShowSummary(false)}>Go Back</button>
-          <button className="button" type="button">End Workout</button>
+          {workoutData.isActive && <button className="button" type="button" onClick={handleEndWorkout}>End Workout</button>}
         </div>
         </>
       )}

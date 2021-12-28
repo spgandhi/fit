@@ -1,12 +1,9 @@
 import React from 'react'
-import AppLayout from '../components/Layouts/AppLayout'
-import WorkoutList from '../components/WorkoutList/WorkoutList'
+import UserList from '../components/UserList/UserList';
 
 function MyApp() {
   return (
-    <AppLayout>
-      <WorkoutList />
-    </AppLayout>
+      <UserList />
   )
 }
 

@@ -18,3 +18,8 @@ export type Workout = {
   exercises: Exercise[];
   startTime: Date;
 }
+
+export type User = {
+  id: string;
+  name: string;
+}

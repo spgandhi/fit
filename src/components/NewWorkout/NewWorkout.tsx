@@ -3,6 +3,7 @@ import { gql, useMutation, useQuery } from '@apollo/client';
 import { useRouter } from 'next/router';
 import AppLayout from '../Layouts/AppLayout'
 import StepChoose from './StepChoose'
+import { User } from '../../data/types';
 
 // Define mutation
 const INCREMENT_COUNTER = gql`
@@ -27,28 +28,33 @@ const GET_WORKOUT_DATA = gql`
   }
 `
 
+interface Props {
+  userPath: string,
+  userData: User,
+}
 
-function NewWorkout() {
+function NewWorkout(props:Props) {
+
+  const { userPath, userData } = props;
 
   const router = useRouter();
 
-  // Exercises
   const { data: adminData } = useQuery(GET_WORKOUT_DATA);
   const [selectedExercises, setSelectedExercises] = useState<string[]>([])
-
-  const [selectedWorkoutFocus, setSelectedWorkoutFocus] = useState<any>([])
+  // const [selectedWorkoutFocus, setSelectedWorkoutFocus] = useState<any>([])
+  const [searchInput, setSearchInput] = useState<string>("");
   
   const [mutateFunction] = useMutation(INCREMENT_COUNTER);
 
-  const onWorkoutSelect = (item: string) => {
-    const workouts = [...selectedWorkoutFocus];
-    if(workouts.indexOf(item) === -1) {
-      workouts.push(item);
-    }else {
-      workouts.splice(workouts.indexOf(item), 1);
-    }
-    setSelectedWorkoutFocus(workouts);
-  }
+  // const onWorkoutSelect = (item: string) => {
+  //   const workouts = [...selectedWorkoutFocus];
+  //   if(workouts.indexOf(item) === -1) {
+  //     workouts.push(item);
+  //   }else {
+  //     workouts.splice(workouts.indexOf(item), 1);
+  //   }
+  //   setSelectedWorkoutFocus(workouts);
+  // }
 
   const onExerciseSelect = (item: string) => {
     const exercises = [...selectedExercises];
@@ -92,7 +98,7 @@ function NewWorkout() {
         },
       }
     });
-    router.push('/workouts');
+    router.push(`${userPath}`);
   }
 
   let exerciseCategories = [];
@@ -104,15 +110,22 @@ function NewWorkout() {
   }
   exerciseCategories = exerciseCategories.map((item, index) => ({id: index, name: item, slug: item}));
     
-  console.log(adminData);
   return (
-    <AppLayout title="Add New Workout">
+    <AppLayout title="Add Workout" subTitle={userData.name}>
       {adminData &&
       <>
-        <StepChoose title="Choose Focus" options={exerciseCategories} onItemClick={onWorkoutSelect} activeItems={selectedWorkoutFocus} />
-        <StepChoose title="Choose Exercises" options={adminData.exercises} onItemClick={onExerciseSelect} activeItems={selectedExercises} />
+        <div className="pb-8">
+          <div>Search</div>
+          <input className='w-full rounded-md p-2' type="text" onChange={(e) => setSearchInput(e.target.value)} value={searchInput}/>
+        </div>
+        <StepChoose 
+          title="Choose Exercises"
+          options={adminData.exercises.filter(ex => ex.name.toLowerCase().includes(searchInput.toLowerCase()))}
+          onItemClick={onExerciseSelect}
+          activeItems={selectedExercises}
+        />
         <div className="mt-4">
-          <button className="button white" type='button' onClick={handleStartWorkout}>Start Workout</button>
+          <button className="button white fixed right-[12px] bottom-[64px]" type='button' onClick={handleStartWorkout}>Start Workout</button>
         </div>
         </>
       }

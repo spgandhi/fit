@@ -24,7 +24,7 @@ function StepChoose(props: Props) {
 
   return (
     <div>
-      <h4>{title}</h4>
+      <div>{title}</div>
       <div className='grid grid-cols-3 gap-x-4 gap-y-4'>
         {options.map(option => (
           <SelectableCard 
