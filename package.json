@@ -3,7 +3,7 @@
   "main": "src/index.js",
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "next build && next export",
     "start": "next start",
     "export": "next export -o build",
     "styles": "postcss src/styles/index.scss -o src/styles/styles.css"
