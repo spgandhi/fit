@@ -60,6 +60,7 @@ function WorkoutList(props: Props) {
                 }}>
                   <div className="w-full">
                     {date.format(item.startTime)}
+                    {item.exercises.length} Exercises
                   </div>
                 </Link>
               </List.Item>

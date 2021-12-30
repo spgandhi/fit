@@ -4,12 +4,24 @@ services:
     client:
         build:
             context: ./client
+        ports:
+            - "3000:3000"
+        volumes:
+            - ./client:/src/
+            - nodemodules:/src/node_modules
     server:
         build:
             context: ./server
+        ports:
+            - "4000:4000"
     nginx:
+        depends_on:
+            - server
+            - client
         restart: always
         build:
             context: ./nginx
         ports:
-            - "80:3050"
+            - "8000:80"
+volumes:
+    nodemodules: {}
