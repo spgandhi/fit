@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1
 FROM node:12-alpine
 RUN apk add --no-cache python2 g++ make
-WORKDIR /src
+WORKDIR /
 COPY package.json /
 COPY yarn.lock /
 RUN yarn install
