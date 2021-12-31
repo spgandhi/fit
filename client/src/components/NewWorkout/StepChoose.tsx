@@ -9,7 +9,6 @@ type Item = {
 }
 
 interface Props {
-  title: string,
   options: Item[],
   onItemClick: (item: string) => void,
   activeItems: string[],
@@ -17,7 +16,6 @@ interface Props {
 
 function StepChoose(props: Props) {
   const {
-    title,
     options,
     onItemClick,
     activeItems
@@ -25,7 +23,6 @@ function StepChoose(props: Props) {
 
   return (
     <div>
-      <div>{title}</div>
       <div className='flex'>
         <List 
           dataSource={options}

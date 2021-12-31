@@ -1,6 +1,8 @@
 import { useRouter } from 'next/router';
 import React from 'react'
 import { gql, useQuery } from '@apollo/client';
+import { Spin } from 'antd';
+import FullPageSpinner from '../../atoms/FullPageSpinner';
 
 
 const GET_USER = gql`
@@ -18,14 +20,11 @@ const UserWrapper = Component => function() {
 
   const { data: userData } = useQuery(GET_USER, {
     variables: { "where": {
-      "id": 0
+      "id": userid
     } }
   });
 
-  console.log(userData);
-  
-
-  if(!userid || !userData || !userData.users) return null;
+  if(!userid || !userData || !userData.users) return <FullPageSpinner />;
   return <Component userData={userData.users[0]} userId={userid} userPath={`/user/${userid}`} />
 };
 

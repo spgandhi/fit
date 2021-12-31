@@ -8,24 +8,19 @@ import WorkoutSessionExercise from './WorkoutSessionExercise';
 import { transformWorkoutGraphqlData } from './helper';
 import WorkoutSummary from './WorkoutSummary';
 import date from '../../data/date';
+import gqlQueries from '../../data/gqlQueries';
 
 const { TabPane } = Tabs;
 
 const GET_DATA = gql`
-query Workouts($where: WorkoutWhere, $workoutConnectionWhere: ExerciseWorkoutConnectionWhere, $userWhere: UserWhere) {
+${gqlQueries.exercise.fragment}
+query Workouts($where: WorkoutWhere, $userWhere: UserWhere) {
   workouts(where: $where) {
     id
     isActive
     startTime
     exercises {
-      name
-      id
-      slug
-      workoutConnection(where: $workoutConnectionWhere) {
-        edges {
-          details
-        }
-      }
+     ... ExerciseFragment
     }
   }
   users (where: $userWhere) {
@@ -96,12 +91,7 @@ function WorkoutSession(props: Props) {
       },
       userWhere: {
         id: userData.id,
-      },
-      workoutConnectionWhere: {
-        node: {
-          id: workoutId,
-        },
-      },
+      }
     },
   });
 
@@ -121,14 +111,22 @@ function WorkoutSession(props: Props) {
     }
   }, [data]);
 
-  useEffect(() => {
-    if (updatedData && updatedData.updateWorkouts.workouts) {
-      const workoutData = transformWorkoutGraphqlData(updatedData.updateWorkouts.workouts[0]);
-      setWorkoutData(workoutData);
-    }
-  }, [updatedData]);
+  // useEffect(() => {
+  //   if (updatedData && updatedData.updateWorkouts.workouts) {
+  //     // const workoutData = transformWorkoutGraphqlData(updatedData.updateWorkouts.workouts[0]);
+  //     // setWorkoutData(workoutData);
+  //   }
+  // }, [updatedData]);
+
+  const updateRoundDataLocally = (exerciseId: string, roundData: any) => {
+    const newWorkoutData = { ...workoutData };
+    const exerciseIndex = newWorkoutData.exercises.findIndex(exercise => exercise.id === exerciseId);
+    newWorkoutData.exercises[exerciseIndex].rounds = roundData;
+    setWorkoutData(newWorkoutData);
+  }
 
   const handleUpdateWorkout = (exerciseId: string, roundData: any) => {
+    updateRoundDataLocally(exerciseId, roundData);
     updateWorkoutMutation({
       variables: {
         where: {
@@ -223,10 +221,12 @@ function WorkoutSession(props: Props) {
       {showSummary && (
         <>
         <WorkoutSummary exercises={workoutData.exercises} />
-        <div>
-          <button className="button white" type="button" onClick={() => setShowSummary(false)}>Go Back</button>
-          {workoutData.isActive && <button className="button" type="button" onClick={handleEndWorkout}>End Workout</button>}
-        </div>
+        {workoutData.isActive && (
+          <div className="flex gap-x-4">
+            <button className="button white" type="button" onClick={() => setShowSummary(false)}>Go Back</button>
+            <button className="button" type="button" onClick={handleEndWorkout}>End Workout</button>
+          </div>
+        )}
         </>
       )}
     </AppLayout>

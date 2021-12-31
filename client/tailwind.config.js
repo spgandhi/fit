@@ -5,12 +5,22 @@ module.exports = {
     extend: {
       colors: {
         primary: {
-         DEFAULT: '#2a2c4b',
-         light: '#353763',
+          DEFAULT: '#191923',
+          light: '#343542',
         },
-        secondary: "#60cedc",
+        body: {
+          DEFAULT: '#151E29',
+          secondary: '#404752',
+          light: '#E6E9EE',
+        },
+        accent: {
+          DEFAULT: '#f2305a'
+        }
       }
     },
   },
   plugins: [],
+  corePlugins: {
+    preflight: false,
+  }
 }

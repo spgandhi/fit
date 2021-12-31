@@ -1,9 +1,13 @@
 import React, { useState } from 'react'
 import { gql, useMutation, useQuery } from '@apollo/client';
 import { useRouter } from 'next/router';
+import { Tag } from 'antd';
 import AppLayout from '../Layouts/AppLayout'
 import StepChoose from './StepChoose'
 import { User } from '../../data/types';
+import tailwindConfig from '../../../tailwind.config';
+import NewWorkoutSkeleton from './NewWorkoutSkeleton';
+import AppLayoutSkeleton from '../Layouts/AppLayoutSkeleton';
 
 // Define mutation
 const INCREMENT_COUNTER = gql`
@@ -39,7 +43,7 @@ function NewWorkout(props:Props) {
 
   const router = useRouter();
 
-  const { data: adminData } = useQuery(GET_WORKOUT_DATA);
+  const { data: exercisesData } = useQuery(GET_WORKOUT_DATA);
   const [selectedExercises, setSelectedExercises] = useState<string[]>([])
   // const [selectedWorkoutFocus, setSelectedWorkoutFocus] = useState<any>([])
   const [searchInput, setSearchInput] = useState<string>("");
@@ -102,32 +106,49 @@ function NewWorkout(props:Props) {
   }
 
   let exerciseCategories = [];
-  if(adminData) {
-    adminData.exercises.forEach(element => {
+  if(exercisesData) {
+    exercisesData.exercises.forEach(element => {
       const categories = (element.focus && element.focus.split(",")) || [];
       exerciseCategories.push(...categories);
     })
   }
   exerciseCategories = exerciseCategories.map((item, index) => ({id: index, name: item, slug: item}));
-    
+
+  const selectedExercisesList = exercisesData && exercisesData.exercises.filter(item => selectedExercises.indexOf(item.id.toString()) !== -1);
+  
+  if(!exercisesData) {
+    return (
+      <AppLayoutSkeleton>
+        <NewWorkoutSkeleton />
+      </AppLayoutSkeleton>
+    )
+  }
+
   return (
     <AppLayout title="Add Workout" subTitle={userData.name}>
-      {adminData &&
-      <>
-        <div className="pb-8">
-          <div>Search</div>
-          <input className='w-full rounded-md p-2' type="text" onChange={(e) => setSearchInput(e.target.value)} value={searchInput}/>
+      {exercisesData &&
+      <div className="px-4">
+        <div className="sticky top-0 py-4 z-10 bg-white flex flex-col gap-y-4">
+          <div>
+            <input placeholder='Search' className='w-full rounded-md p-2 border-body-secondary' type="text" onChange={(e) => setSearchInput(e.target.value)} value={searchInput}/>
+          </div>
+          {selectedExercisesList && 
+            <div>
+              {selectedExercisesList.map((item) => (
+                <Tag closable onClose={() => onExerciseSelect(item.id)} className="rounded-md my-1">{item.name}</Tag>
+              ))}
+            </div>
+          }
         </div>
         <StepChoose 
-          title="Choose Exercises"
-          options={adminData.exercises.filter(ex => ex.name.toLowerCase().includes(searchInput.toLowerCase()))}
+          options={exercisesData.exercises.filter(ex => ex.name.toLowerCase().includes(searchInput.toLowerCase()))}
           onItemClick={onExerciseSelect}
           activeItems={selectedExercises}
         />
         <div className="mt-4">
-          <button className="button white fixed right-[12px] bottom-[64px]" type='button' onClick={handleStartWorkout}>Start Workout</button>
+          <button disabled={selectedExercises.length === 0} className="button footer-btn fixed left-0 bottom-0 w-full rounded-none" type='button' onClick={handleStartWorkout}>Start Workout</button>
         </div>
-        </>
+        </div>
       }
     </AppLayout>
   )

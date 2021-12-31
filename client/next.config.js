@@ -1,6 +1,8 @@
 const path = require('path')
 const CopyPlugin = require('copy-webpack-plugin')
-module.exports = {
+const withLess = require("next-with-less");
+
+module.exports = withLess({
   webpack: (config) => {
     config.plugins.push(
       new CopyPlugin({
@@ -17,4 +19,4 @@ module.exports = {
     )
     return config
   },
-}
+})

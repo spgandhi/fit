@@ -3,6 +3,7 @@ import { gql, useQuery } from '@apollo/client';
 import Link from 'next/link';
 import { List } from 'antd';
 import AppLayout from '../Layouts/AppLayout';
+import FullPageSpinner from '../../atoms/FullPageSpinner';
 
 const GET_USERS = gql`
   query GetUsers {
@@ -18,11 +19,12 @@ interface Props {}
 function UserList(props: Props) {
 
   const { data } = useQuery(GET_USERS);
-  console.log(data);
+
+  if(!data) return <FullPageSpinner />
 
   return (
     <AppLayout>
-    <div>
+    <div className="p-4">
       {data && data.users &&
         <List
           dataSource={data.users}

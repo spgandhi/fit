@@ -8,25 +8,44 @@
   font-family: 'Nunito', sans-serif;
 }
 
-div, p, li, ul, span {
-  color: white;
-}
-
-input {
-  color: black !important; 
+div, p, span, ul, li, h1, h2, h3, h4, h5, h6 {
+  @apply text-body;
 }
 
 .button {
-  @apply bg-secondary;
-  @apply px-8 py-4;
-  border-radius: 4px !important;
+  @apply border-none;
+  @apply bg-accent;
+  @apply text-white;
+  @apply px-4 py-2;
+  @apply font-bold;
+  @apply rounded-md;
 }
 
 .button.white {
-  @apply bg-white;
-  @apply text-black;
+  @apply bg-body-light;
+  @apply text-body;
 }
 
 .button.sm {
   @apply px-4 py-2;
+}
+
+.button.footer-btn {
+  @apply rounded-none;
+  @apply py-4;
+}
+
+.button:disabled {
+  background-color: rgb(252 157 173);
+}
+
+input.no-style{
+  @apply inline;
+  @apply border-none;
+}
+
+.button.clear {
+  @apply bg-white;
+  @apply border-none;
+  @apply text-accent;
 }
