@@ -8,15 +8,15 @@ services:
             - "3000:3000"
         volumes:
             - ./client:/src/
-            - nodemodules:/src/node_modules
-            - /etc/letsencrypt/live:/etc/letsencrypt/live
+            - nodemodules:/src/node_modules 
+            - /etc/letsencrypt:/etc/letsencrypt
     server:
         build:
             context: ./server
         ports:
             - "4000:4000"
         volumes:
-            - /etc/letsencrypt/live:/etc/letsencrypt/live
+            - /etc/letsencrypt:/etc/letsencrypt
     nginx:
         depends_on:
             - server
@@ -27,6 +27,6 @@ services:
         ports:
             - "8000:80"
         volumes:
-            - /etc/letsencrypt/live:/etc/letsencrypt/live
+            - /etc/letsencrypt:/etc/letsencrypt
 volumes:
     nodemodules: {}
