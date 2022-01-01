@@ -75,8 +75,8 @@ async function startApolloServer() {
     // Make sure these files are secured.
     httpServer = https.createServer(
       {
-        key: fs.readFileSync(`./etc/letsencrypt/live/fitbud.me/privkey.pem`),
-        cert: fs.readFileSync(`./etc/letsencrypt/live/fitbud.me/cert.pem`),
+        key: fs.readFileSync(`/etc/letsencrypt/live/fitbud.me/privkey.pem`),
+        cert: fs.readFileSync(`/etc/letsencrypt/live/fitbud.me/cert.pem`),
       },
       app,
     );

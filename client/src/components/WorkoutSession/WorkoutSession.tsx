@@ -198,37 +198,39 @@ function WorkoutSession(props: Props) {
 
   return (
     <AppLayout showNavigation={false} title={workoutData && date.format(workoutData.startTime)} subTitle={data && data.users && data.users[0].name}>
+      <div className='p-4'>
       {workoutData
-      && !showSummary &&(
-        <>
-         <Tabs defaultActiveKey="0">
-            {workoutData.exercises.map((exercise, index) => (
-              <TabPane tab={exercise.name} key={index}>
-                <WorkoutSessionExercise
-                  data={exercise}
-                  onRoundRemove={handleRoundRemove}
-                  onRoundupdate={handleRoundDataUpdate}
-                  onStartRound={handleStartRound}
-                />
-              </TabPane>
-            ))}
-          </Tabs>
-          {workoutData.isActive && (
-            <button className='fixed right-[12px] bottom-[12px] button white sm' type="button" onClick={() => {setShowSummary(true)}}>End Workout</button>
-          )}
-        </>
-      )}
-      {showSummary && (
-        <>
-        <WorkoutSummary exercises={workoutData.exercises} />
-        {workoutData.isActive && (
-          <div className="flex gap-x-4">
-            <button className="button white" type="button" onClick={() => setShowSummary(false)}>Go Back</button>
-            <button className="button" type="button" onClick={handleEndWorkout}>End Workout</button>
-          </div>
+        && !showSummary &&(
+          <>
+          <Tabs defaultActiveKey="0">
+              {workoutData.exercises.map((exercise, index) => (
+                <TabPane tab={exercise.name} key={index}>
+                  <WorkoutSessionExercise
+                    data={exercise}
+                    onRoundRemove={handleRoundRemove}
+                    onRoundupdate={handleRoundDataUpdate}
+                    onStartRound={handleStartRound}
+                  />
+                </TabPane>
+              ))}
+            </Tabs>
+            {workoutData.isActive && (
+              <button className='fixed right-[12px] bottom-[12px] button white sm' type="button" onClick={() => {setShowSummary(true)}}>End Workout</button>
+            )}
+          </>
         )}
-        </>
-      )}
+        {showSummary && (
+          <>
+          <WorkoutSummary workoutData={workoutData} />
+          {workoutData.isActive && (
+            <div className="flex gap-x-4">
+              <button className="button white" type="button" onClick={() => setShowSummary(false)}>Go Back</button>
+              <button className="button" type="button" onClick={handleEndWorkout}>End Workout</button>
+            </div>
+          )}
+          </>
+        )}
+      </div>
     </AppLayout>
   );
 }

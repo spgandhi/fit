@@ -1,7 +1,7 @@
 import React from 'react'
 import { gql, useQuery } from '@apollo/client';
 import Link from 'next/link';
-import { List } from 'antd';
+import { List, Tag } from 'antd';
 import { useRouter } from 'next/router';
 import { PlusOutlined } from '@ant-design/icons';
 import { User, Workout } from '../../data/types';
@@ -84,7 +84,12 @@ function WorkoutList(props: Props) {
                     }
                   }}>
                     <div className="w-full flex flex-col">
-                      <h3>{date.format(item.startTime)}</h3>
+                      <div>
+                        <h3 className='inline'>{date.format(item.startTime)}</h3>
+                        <Tag className='float-right' color={item.isActive ? 'warning' : 'success'}>
+                          {item.isActive ? 'In Progress' : 'Completed'}
+                        </Tag>
+                      </div>
                       <div className="text-body-secondary">{item.exercises && item.exercises.length} Exercises</div>
                     </div>
                   </Link>
