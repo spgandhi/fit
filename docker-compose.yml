@@ -9,11 +9,14 @@ services:
         volumes:
             - ./client:/src/
             - nodemodules:/src/node_modules
+            - /etc/letsencrypt/live:/etc/letsencrypt/live
     server:
         build:
             context: ./server
         ports:
             - "4000:4000"
+        volumes:
+            - /etc/letsencrypt/live:/etc/letsencrypt/live
     nginx:
         depends_on:
             - server
