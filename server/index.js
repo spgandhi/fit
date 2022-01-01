@@ -48,7 +48,7 @@ async function startApolloServer() {
   };
 
   console.log(process.env.NODE_ENV);
-  const environment = process.env.NODE_ENV || 'development';
+  const environment = process.env.NODE_ENV || 'production';
   const config = configurations[environment];
 
   const driver = neo4j.driver(
