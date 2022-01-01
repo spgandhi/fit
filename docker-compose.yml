@@ -14,8 +14,6 @@ services:
             context: ./server
         ports:
             - "4000:4000"
-        volumes:
-            - /etc/letsencrypt/live:/etc/letsencrypt/live
     nginx:
         depends_on:
             - server
@@ -25,5 +23,7 @@ services:
             context: ./nginx
         ports:
             - "8000:80"
+        volumes:
+            - /etc/letsencrypt/live:/etc/letsencrypt/live
 volumes:
     nodemodules: {}
