@@ -7,8 +7,6 @@ services:
         ports:
             - "3000:3000"
         volumes:
-            - ./fit-bud:/src/
-            - nodemodules:/src/node_modules 
             - /etc/letsencrypt:/etc/letsencrypt
     server:
         build:
@@ -28,5 +26,3 @@ services:
             - "8000:80"
         volumes:
             - /etc/letsencrypt:/etc/letsencrypt
-volumes:
-    nodemodules: {}
