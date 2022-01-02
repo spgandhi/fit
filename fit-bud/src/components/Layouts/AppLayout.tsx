@@ -47,11 +47,6 @@ function AppLayout(props: Props) {
         </div>
       </div>
       <IonContent fullscreen>
-        <IonHeader collapse="condense">
-          <IonToolbar>
-            <IonTitle size="large">{title || 'FitBud'}</IonTitle>
-          </IonToolbar>
-        </IonHeader>
         {children}
       </IonContent>
     </IonPage>
