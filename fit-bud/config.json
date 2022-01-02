@@ -1,9 +1,9 @@
 {
-  "source": ["tokens/**/*.json"],
+  "source": ["./src/styles/tokens/**/*.json"],
   "platforms": {
     "scss": {
       "transformGroup": "scss",
-      "buildPath": "build/",
+      "buildPath": "./src/styles/build/",
       "files": [{
         "destination": "tokens.scss",
         "format": "scss/variables"
@@ -11,7 +11,7 @@
     },
     "css": {
       "transformGroup": "css",
-      "buildPath": "build/",
+      "buildPath": "./src/styles/build/",
       "files": [
         {
           "format": "css/variables",
@@ -21,7 +21,7 @@
     },
     "json": {
       "transformGroup": "js",
-      "buildPath": "build/",
+      "buildPath": "./src/styles/build/",
       "files": [
         {
           "format": "json/nested",

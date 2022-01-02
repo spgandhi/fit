@@ -48,10 +48,11 @@
     "eject": "react-scripts eject",
     "build:css": "postcss src/styles/styles.css -o src/styles/styles.min.css",
     "watch:css": "postcss src/styles/styles.css -o src/styles/styles.min.css -w",
-    "start": "style-dictionary build && npm-run-all -p watch:css start-js",
+    "start": "npm run build:style-dict && npm-run-all -p watch:css start-js",
+    "build:style-dict": "style-dictionary build",
     "start-js": "react-scripts start",
     "build-js": "react-scripts build",
-    "build": "npm-run-all build:css build-js"
+    "build": "npm run build:style-dict && npm-run-all build:css build-js"
   },
   "eslintConfig": {
     "extends": [
