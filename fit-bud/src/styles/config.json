@@ -1,0 +1,33 @@
+{
+  "source": ["tokens/**/*.json"],
+  "platforms": {
+    "scss": {
+      "transformGroup": "scss",
+      "buildPath": "build/",
+      "files": [{
+        "destination": "tokens.scss",
+        "format": "scss/variables"
+      }]
+    },
+    "css": {
+      "transformGroup": "css",
+      "buildPath": "build/",
+      "files": [
+        {
+          "format": "css/variables",
+          "destination": "tokens.css"
+        }
+      ]
+    },
+    "json": {
+      "transformGroup": "js",
+      "buildPath": "build/",
+      "files": [
+        {
+          "format": "json/nested",
+          "destination": "tokens.json"
+        }
+      ]
+    }
+  }
+}

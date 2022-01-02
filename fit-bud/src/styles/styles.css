@@ -1,0 +1,86 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.bg-gradient-primary {
+  @apply bg-gradient-to-br from-primary-one to-primary-two;
+}
+
+.button {
+  @apply border-none;
+  @apply bg-gradient-primary;
+  @apply text-white;
+  @apply px-4 py-2;
+  @apply font-bold;
+  @apply rounded-md;
+}
+
+.button.w-icon{
+  display: flex;
+  align-items: center;
+  column-gap: 8px;
+  justify-content: center
+}
+
+.button.white {
+  @apply bg-neutral-20;
+  @apply text-neutral-100;
+}
+
+.button.sm {
+  @apply px-4 py-2;
+}
+
+.button.footer-btn {
+  @apply rounded-none;
+  @apply py-4;
+  @apply text-center;
+}
+
+.button:disabled {
+  background-color: rgb(252 157 173);
+}
+
+input.no-style{
+  @apply inline;
+  @apply border-none;
+}
+
+.button.basic {
+  @apply bg-white;
+  @apply border-none;
+  background: none;
+  @apply text-secondary;
+}
+
+ion-icon {
+  font-size: 24px;
+}
+
+.timeline-wrapper::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 100%;
+  @apply border outline-primary outline-dashed outline-1; 
+  z-index: -1;
+  opacity: 0.5;
+  @apply rounded;
+}
+
+.timeline-item-title::before{
+  content: "";
+  position: absolute;
+  top: 6px;
+  left: calc(-32px - 4px);
+  width: 8px;
+  height: 8px;
+  @apply bg-secondary;
+  z-index: -1;
+  @apply rounded-full;
+  @apply outline-secondary outline-2 outline outline-offset-4;
+}

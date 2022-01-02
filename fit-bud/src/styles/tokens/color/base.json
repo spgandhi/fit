@@ -1,0 +1,54 @@
+{
+  "color": {
+    "primary": {
+      "DEFAULT": {
+        "value": "#92A3FD"
+      },
+      "one": {
+        "value": "#92A3FD"
+      },
+      "two": {
+        "value": "#9DCEFF"
+      }
+    },
+    "secondary": {
+      "DEFAULT": {
+        "value": "#C58BF2"
+      },
+      "one": {
+        "value": "#C58BF2"
+      },
+      "two": {
+        "value": "#EEA4CE"
+      }
+    },
+    "neutral": {
+      "100": {
+        "value": "#1D1617"
+      },
+      "70": {
+        "value": "#7B6F72"
+      },
+      "40": {
+        "value": "#ADA4A5"
+      },
+      "20": {
+        "value": "#DDDADA"
+      },
+      "10": {
+        "value": "#F7F8F8"
+      }
+    },
+    "white": {
+      "value": "#ffffff"
+    },
+    "black":{
+      "value": "{color.neutral.100.value}"
+    },
+    "success": {
+      "DEFAULT": {
+        "value": "#00BA88"
+      }
+    }
+  }
+}

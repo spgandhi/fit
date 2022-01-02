@@ -1,0 +1,7 @@
+{
+  "name": "FitBud",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react"
+}
