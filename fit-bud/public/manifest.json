@@ -2,8 +2,7 @@
   "theme_color": "#C33764",
   "background_color": "#fff",
   "display": "standalone",
-  "scope": "/",
-  "start_url": "/",
+  "start_url": ".",
   "name": "FitBud",
   "short_name": "FitBud",
   "icons": [
