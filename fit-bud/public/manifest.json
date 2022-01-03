@@ -1,7 +1,7 @@
 {
   "theme_color": "#C33764",
   "background_color": "#fff",
-  "display": "browser",
+  "display": "standalone",
   "scope": "/",
   "start_url": "/",
   "name": "FitBud",
